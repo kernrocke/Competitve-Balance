@@ -9,7 +9,7 @@ cls
 **  Project:      	Competitive Balance for Domestic 50-Over Tournaments
 **  Analyst:		Kern Rocke
 **	Date Created:	14/02/2021
-**	Date Modified: 	14/02/2021
+**	Date Modified: 	15/02/2021
 **  Algorithm Task: Country comparison of Competitive Balance
 
 
@@ -61,9 +61,10 @@ append using "`datapath'/Manuscripts/Competitive Balance/Data/WI_50_CB.dta"
 
 label define country 1 "England" 2" West Indies"
 label value country country
+label var country "Country Domestic League"
 
-
-*Bar Chart of C5ICB by Year
+*--------------------------------------------------------------------------------
+*Line Chart of C5ICB by Year
 
 #delimit;
 twoway 
@@ -72,7 +73,8 @@ twoway
 			, 
 			
 			yscale(reverse) 
-			ylabel(100(10)180, angle(horizontal) nogrid)
+			ylabel(100(10)160, angle(horizontal) nogrid)
+			yline(100)
 			xlabel(2009(1)2019, angle(45))
 			
 			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
@@ -83,6 +85,36 @@ twoway
 				c(black) size(medium))
 			
 			name(C5ICB)
+			legend(on  col(2) order(1 2) 
+				lab(1 "England") 
+				lab(2 "West Indies")
+			
+			region(fcolor(gs16) lw(vthin) ))
+;
+#delimit cr
+*--------------------------------------------------------------------------------
+
+*Line Chart of HICB by Year
+
+#delimit;
+twoway 
+	(connected HICB Year if country == 1)
+	(connected HICB Year if country == 2)
+			, 
+			
+			yscale(reverse) 
+			ylabel(100(10)160, angle(horizontal) nogrid)
+			yline(100)
+			xlabel(2009(1)2019, angle(45))
+			
+			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
+			graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
+			ysize(12) xsize(10)
+			
+			title("HICB by Year" "Domestic 50-Over Cricket Tournaments", 
+				c(black) size(medium))
+			
+			name(HICB)
 			legend(on  col(2) order(1 2) 
 				lab(1 "England") 
 				lab(2 "West Indies")
