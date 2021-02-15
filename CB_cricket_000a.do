@@ -5,11 +5,12 @@
 **  Project:      	Competitive Balance for Domestic 50-Over Tournaments
 **  Analyst:		Kern Rocke
 **	Date Created:	14/02/2021
-**	Date Modified: 	14/02/2021
-**  Algorithm Task: Development of C5 and C5ICB
+**	Date Modified: 	15/02/2021
+**  Algorithm Task: Development of Competitive Balance Indices
 
 *Minor cleaning
 drop if Year == .
+replace Points = 0 if Points <0
 label var Year "League Year"
 label var Team "League Team"
 label var Wins "Number of wins"
@@ -63,9 +64,22 @@ gen C5ICB = C5 / (5/n_teams)
 replace C5ICB = C5ICB*100
 label var C5ICB "C5 Competitive Balance Index"
 
+*Create S
+gen S2 = (Points/point_total)^2
+
+*Create HHI
+by Year, sort: egen float HHI = total(S2)
+label var HHI "HerfindahlÐHirschman Index"
+
+*Creat HICB
+gen HICB = HHI/(1/n_teams)
+replace HICB = HICB*100
+label var HICB "HHI of Competitive Balance"
+
 *Reduce dataset for simplicity
-collapse (mean) C5ICB C5, by(Year)
+collapse (mean) C5ICB C5 HHI HICB, by(Year)
 label var C5ICB "C5 Competitive Balance Index"
 label var C5 "C5- Five-club concentration ratio"
-
+label var HICB "HHI of Competitive Balance"
+label var HHI "HerfindahlÐHirschman Index"
 *----------------------------END------------------------------------------------
