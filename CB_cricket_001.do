@@ -55,11 +55,25 @@ gen country = 1 // England
 *Save dataset
 save "`datapath'/Manuscripts/Competitive Balance/Data/Eng_50_CB.dta", replace
 *--------------------------------------------------------------------------------
+**AUSTRALIA
+*Load in data for data management and analysis (Aus- Marash Cup)
+import excel using "`datapath'/Manuscripts/Competitive Balance/Data/WI_Super_50.xlsx", sheet("Aus") firstrow clear
+
+*Run CB and CBICB analysis
+do "`dopath'/Competitve-Balance/CB_cricket_000a.do"
+
+*Create country variable
+gen country = 3 // Australia
+
+*Save dataset
+save "`datapath'/Manuscripts/Competitive Balance/Data/Aus_50_CB.dta", replace
+*--------------------------------------------------------------------------------
 
 use "`datapath'/Manuscripts/Competitive Balance/Data/Eng_50_CB.dta", clear
 append using "`datapath'/Manuscripts/Competitive Balance/Data/WI_50_CB.dta"
+append using "`datapath'/Manuscripts/Competitive Balance/Data/Aus_50_CB.dta"
 
-label define country 1 "England" 2" West Indies"
+label define country 1 "England" 2 "West Indies" 3 "Austalia"
 label value country country
 label var country "Country Domestic League"
 
@@ -70,6 +84,7 @@ label var country "Country Domestic League"
 twoway 
 	(connected C5ICB Year if country == 1)
 	(connected C5ICB Year if country == 2)
+	(connected C5ICB Year if country == 3)
 			, 
 			
 			yscale(reverse) 
@@ -85,9 +100,10 @@ twoway
 				c(black) size(medium))
 			
 			name(C5ICB)
-			legend(on  col(2) order(1 2) 
+			legend(on  col(3) order(1 2 3) 
 				lab(1 "England") 
 				lab(2 "West Indies")
+				lab(3 "Australia") 
 			
 			region(fcolor(gs16) lw(vthin) ))
 ;
@@ -100,6 +116,7 @@ twoway
 twoway 
 	(connected HICB Year if country == 1)
 	(connected HICB Year if country == 2)
+	(connected HICB Year if country == 3)
 			, 
 			
 			yscale(reverse) 
@@ -115,9 +132,10 @@ twoway
 				c(black) size(medium))
 			
 			name(HICB)
-			legend(on  col(2) order(1 2) 
+			legend(on  col(3) order(1 2 3) 
 				lab(1 "England") 
 				lab(2 "West Indies")
+				lab(3 "Australia")
 			
 			region(fcolor(gs16) lw(vthin) ))
 ;
