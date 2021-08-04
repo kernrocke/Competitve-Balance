@@ -69,7 +69,7 @@ gen S2 = (Points/point_total)^2
 
 *Create HHI
 by Year, sort: egen float HHI = total(S2)
-label var HHI "Herfindahl–Hirschman Index"
+label var HHI "Herfindahl√êHirschman Index"
 
 *Creat HICB
 gen HICB = HHI/(1/n_teams)
@@ -81,5 +81,5 @@ collapse (mean) C5ICB C5 HHI HICB, by(Year)
 label var C5ICB "C5 Competitive Balance Index"
 label var C5 "C5- Five-club concentration ratio"
 label var HICB "HHI of Competitive Balance"
-label var HHI "Herfindahl–Hirschman Index"
+label var HHI "Herfindahl√êHirschman Index"
 *----------------------------END------------------------------------------------

@@ -9,7 +9,7 @@ cls
 **  Project:      	Competitive Balance for Domestic 50-Over Tournaments
 **  Analyst:		Kern Rocke
 **	Date Created:	14/02/2021
-**	Date Modified: 	15/02/2021
+**	Date Modified: 	22/02/2021
 **  Algorithm Task: Country comparison of Competitive Balance
 
 
@@ -20,10 +20,16 @@ macro drop _all
 set more 1
 set linesize 150
 
-** Set working directories: this is for DATASET and LOG files
+/** Set working directories: this is for DATASET and LOG files (MAC paths)
 local datapath "/Users/kernrocke/OneDrive - The University of the West Indies"
 local dopath "/Users/kernrocke/OneDrive - The University of the West Indies/Github Repositories"
 local logpath "/Users/kernrocke/OneDrive - The University of the West Indies"
+*/
+
+** Set Working directories: this is for DATASET and LOG files (Windows paths)
+local datapath "X:/OneDrive - The UWI - Cave Hill Campus"
+local dopath "X:/OneDrive - The UWI - Cave Hill Campus/Github Repositories"
+local logpath "X:/OneDrive - The UWI - Cave Hill Campus"
 
 **Set up user driven command
 ssc install fillmissing, replace
@@ -69,9 +75,13 @@ gen country = 3 // Australia
 save "`datapath'/Manuscripts/Competitive Balance/Data/Aus_50_CB.dta", replace
 *--------------------------------------------------------------------------------
 
+*Merge datasets together
 use "`datapath'/Manuscripts/Competitive Balance/Data/Eng_50_CB.dta", clear
 append using "`datapath'/Manuscripts/Competitive Balance/Data/WI_50_CB.dta"
 append using "`datapath'/Manuscripts/Competitive Balance/Data/Aus_50_CB.dta"
+
+*Save dataset
+save "`datapath'/Manuscripts/Competitive Balance/Data/Cricket_50_CB.dta", replace
 
 label define country 1 "England" 2 "West Indies" 3 "Austalia"
 label value country country
