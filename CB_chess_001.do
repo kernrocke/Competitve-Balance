@@ -3,7 +3,7 @@
 **  Project:      	Competitive Balance for Champions Chess Tour
 **  Analyst:		Kern Rocke
 **	Date Created:	01/06/2021
-**	Date Modified: 	04/08/2021
+**	Date Modified: 	01/09/2021
 **  Algorithm Task: Development of Competitive Balance Indices
 
 ** DO-FILE SET UP COMMANDS
@@ -81,6 +81,14 @@ keep rank Points ELO
 gen competition = "Chessable Masters"
 save "`datapath'/Chessable_Masters.dta", replace
 
+*Load in data (Aimchess US Rapid)
+import excel "`datapath'/Champions_Chess_Tour.xlsx", sheet("Aimchess US Rapid") firstrow clear
+rename A rank
+label var rank "Competition Ranking"
+keep rank Points ELO
+gen competition = "Aimchess US Rapid"
+save "`datapath'/Aimchess_US_Rapid.dta", replace
+
 *Merge all data together
 use "`datapath'/Skilling_Open_Chess.dta"
 append using "`datapath'/Airthings_Masters_Chess.dta"
@@ -90,6 +98,7 @@ append using "`datapath'/New_in_Chess_Classic_Chess.dta"
 append using "`datapath'/FTX_Crypto_Cup_Chess.dta"
 append using "`datapath'/Goldmoney_Asian_Open_Chess.dta"
 append using "`datapath'/Chessable_Masters.dta"
+append using "`datapath'/Aimchess_US_Rapid.dta"
 label var competition "Competition"
 
 
@@ -153,9 +162,10 @@ replace compete = 5 if competition == "New in Chess Classic"
 replace compete = 6 if competition == "FTX Crypto Cup" 
 replace compete = 7 if competition == "Goldmoney Asian Open"
 replace compete = 8 if competition == "Chessable Masters"
+replace compete = 9 if competition == "Aimchess US Rapid"
 
 label var compete "Champions Chess Tour"
-label define compete 1"Skilling Open" 2"Airthings Masters" 3"Opera Euro Rapid" 4"Magnus Carlsen Invitational" 5"New in Chess Classic" 6"FTX Crypto Cup" 7"Goldmoney Asian Open" 8"Chessable Masters"
+label define compete 1"Skilling Open" 2"Airthings Masters" 3"Opera Euro Rapid" 4"Magnus Carlsen Invitational" 5"New in Chess Classic" 6"FTX Crypto Cup" 7"Goldmoney Asian Open" 8"Chessable Masters" 9"Aimchess US Rapid"
 label value compete compete
 
 *--------------------------------------------------------------------------------
@@ -167,9 +177,9 @@ twoway
 			, 
 			
 			yscale(reverse) 
-			ylabel(100(5)130, angle(horizontal) nogrid)
+			ylabel(100(5)145, angle(horizontal) nogrid)
 			yline(100)
-			xlabel(#7, angle(forty_five) labsize(small) valuelabel)
+			xlabel(#9, angle(forty_five) labsize(small) valuelabel)
 			
 			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
 			graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
@@ -197,7 +207,7 @@ twoway
 			yscale(reverse) 
 			ylabel(100(2)116, angle(horizontal) nogrid)
 			yline(100)
-			xlabel(#7, angle(forty_five) labsize(small) valuelabel)
+			xlabel(#9, angle(forty_five) labsize(small) valuelabel)
 			
 			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
 			graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
@@ -222,5 +232,6 @@ erase "`datapath'/New_in_Chess_Classic_Chess.dta"
 erase "`datapath'/FTX_Crypto_Cup_Chess.dta"
 erase "`datapath'/Goldmoney_Asian_Open_Chess.dta"
 erase "`datapath'/Chessable_Masters.dta"
+erase "`datapath'/Aimchess_US_Rapid.dta"
 
 
